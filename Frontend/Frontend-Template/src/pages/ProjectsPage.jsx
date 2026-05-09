@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { projectService } from '../services/projectService';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authContext';
 import Loader from '../components/Loader';
 
 const ProjectsPage = () => {

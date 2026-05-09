@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { taskService } from '../services/taskService';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authContext';
 import Loader from '../components/Loader';
 
 const TasksPage = () => {
