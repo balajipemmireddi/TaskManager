@@ -1,7 +1,8 @@
-package com.taskmanager.dashboard;
+package com.taskmanager.controller;
 
 import com.taskmanager.common.ApiResponse;
-import com.taskmanager.dashboard.dto.DashboardResponse;
+import com.taskmanager.dto.DashboardResponse;
+import com.taskmanager.service.DashboardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

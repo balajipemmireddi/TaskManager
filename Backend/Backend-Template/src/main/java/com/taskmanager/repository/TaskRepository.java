@@ -1,5 +1,6 @@
-package com.taskmanager.task;
+package com.taskmanager.repository;
 
+import com.taskmanager.entity.Task;
 import com.taskmanager.common.TaskStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,8 +1,9 @@
-package com.taskmanager.auth;
+package com.taskmanager.controller;
 
-import com.taskmanager.auth.dto.AuthResponse;
-import com.taskmanager.auth.dto.LoginRequest;
-import com.taskmanager.auth.dto.SignupRequest;
+import com.taskmanager.dto.AuthResponse;
+import com.taskmanager.dto.LoginRequest;
+import com.taskmanager.dto.SignupRequest;
+import com.taskmanager.service.AuthService;
 import com.taskmanager.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

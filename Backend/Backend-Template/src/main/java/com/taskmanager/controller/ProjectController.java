@@ -1,8 +1,9 @@
-package com.taskmanager.project;
+package com.taskmanager.controller;
 
 import com.taskmanager.common.ApiResponse;
-import com.taskmanager.project.dto.CreateProjectRequest;
-import com.taskmanager.project.dto.ProjectResponse;
+import com.taskmanager.dto.CreateProjectRequest;
+import com.taskmanager.dto.ProjectResponse;
+import com.taskmanager.service.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

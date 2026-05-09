@@ -1,9 +1,9 @@
-package com.taskmanager.task;
+package com.taskmanager.entity;
 
 import com.taskmanager.common.Priority;
 import com.taskmanager.common.TaskStatus;
-import com.taskmanager.project.Project;
-import com.taskmanager.user.User;
+import com.taskmanager.entity.Project;
+import com.taskmanager.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.taskmanager.task.dto;
+package com.taskmanager.dto;
 
 import com.taskmanager.common.TaskStatus;
 import jakarta.validation.constraints.NotNull;

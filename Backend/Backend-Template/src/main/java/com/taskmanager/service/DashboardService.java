@@ -1,11 +1,11 @@
-package com.taskmanager.dashboard;
+package com.taskmanager.service;
 
 import com.taskmanager.common.TaskStatus;
-import com.taskmanager.dashboard.dto.DashboardResponse;
+import com.taskmanager.dto.DashboardResponse;
 import com.taskmanager.exception.ResourceNotFoundException;
-import com.taskmanager.task.TaskRepository;
-import com.taskmanager.user.User;
-import com.taskmanager.user.UserRepository;
+import com.taskmanager.entity.User;
+import com.taskmanager.repository.TaskRepository;
+import com.taskmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
