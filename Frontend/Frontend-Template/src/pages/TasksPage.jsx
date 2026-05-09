@@ -7,8 +7,12 @@ import Loader from '../components/Loader';
 const TasksPage = () => {
   const { projectId } = useParams();
   const [tasks, setTasks] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('ALL');
+  const [priorityFilter, setPriorityFilter] = useState('ALL');
   const { isAdmin } = useAuth();
 
   useEffect(() => {
@@ -17,11 +21,39 @@ const TasksPage = () => {
     }
   }, [projectId]);
 
+  useEffect(() => {
+    filterTasks();
+  }, [tasks, searchTerm, statusFilter, priorityFilter]);
+
+  const filterTasks = () => {
+    let filtered = [...tasks];
+
+    // Search filter
+    if (searchTerm) {
+      filtered = filtered.filter(task =>
+        task.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Status filter
+    if (statusFilter !== 'ALL') {
+      filtered = filtered.filter(task => task.status === statusFilter);
+    }
+
+    // Priority filter
+    if (priorityFilter !== 'ALL') {
+      filtered = filtered.filter(task => task.priority === priorityFilter);
+    }
+
+    setFilteredTasks(filtered);
+  };
+
   const fetchTasks = async () => {
     try {
       const response = await taskService.getTasksByProject(projectId);
       if (response.success) {
         setTasks(response.data);
+        setFilteredTasks(response.data);
       }
     } catch (err) {
       setError('Failed to load tasks');
@@ -100,16 +132,60 @@ const TasksPage = () => {
         </div>
       </div>
 
+      {/* Search and Filters */}
+      <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="md:col-span-2">
+            <input
+              type="text"
+              placeholder="🔍 Search tasks..."
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div>
+            <select
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="ALL">All Status</option>
+              <option value="TODO">To Do</option>
+              <option value="IN_PROGRESS">In Progress</option>
+              <option value="DONE">Done</option>
+            </select>
+          </div>
+          <div>
+            <select
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={priorityFilter}
+              onChange={(e) => setPriorityFilter(e.target.value)}
+            >
+              <option value="ALL">All Priority</option>
+              <option value="HIGH">High</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="LOW">Low</option>
+            </select>
+          </div>
+        </div>
+        <div className="mt-3 text-sm text-gray-600">
+          Showing {filteredTasks.length} of {tasks.length} tasks
+        </div>
+      </div>
+
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
           {error}
         </div>
       )}
 
-      {tasks.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No tasks found</p>
-          {isAdmin() && (
+      {filteredTasks.length === 0 ? (
+        <div className="text-center py-12 bg-white rounded-lg shadow-md">
+          <p className="text-gray-500 text-lg">
+            {tasks.length === 0 ? 'No tasks found' : 'No tasks match your filters'}
+          </p>
+          {isAdmin() && tasks.length === 0 && (
             <Link
               to={`/projects/${projectId}/tasks/create`}
               className="text-blue-600 hover:text-blue-700 mt-2 inline-block"
@@ -141,7 +217,7 @@ const TasksPage = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {tasks.map((task) => (
+              {filteredTasks.map((task) => (
                 <tr key={task.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">{task.title}</div>
