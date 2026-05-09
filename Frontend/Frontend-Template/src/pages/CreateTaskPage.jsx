@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { taskService } from '../services/taskService';
+import { userService } from '../services/userService';
 
 const CreateTaskPage = () => {
   const { projectId } = useParams();
@@ -12,9 +13,28 @@ const CreateTaskPage = () => {
     projectId: projectId,
     assignedTo: '',
   });
+  const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingUsers, setLoadingUsers] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await userService.getAllUsers();
+      if (response.success) {
+        setUsers(response.data);
+      }
+    } catch (err) {
+      console.error('Failed to load users:', err);
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -121,16 +141,29 @@ const CreateTaskPage = () => {
 
         <div className="mb-6">
           <label htmlFor="assignedTo" className="block text-gray-700 font-medium mb-2">
-            Assign To (User ID)
+            Assign To
           </label>
-          <input
-            type="number"
-            id="assignedTo"
-            name="assignedTo"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={formData.assignedTo}
-            onChange={handleChange}
-          />
+          {loadingUsers ? (
+            <div className="text-gray-500 text-sm">Loading users...</div>
+          ) : (
+            <select
+              id="assignedTo"
+              name="assignedTo"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={formData.assignedTo}
+              onChange={handleChange}
+            >
+              <option value="">-- Unassigned --</option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.name} ({user.email}) - {user.role}
+                </option>
+              ))}
+            </select>
+          )}
+          <p className="text-sm text-gray-500 mt-1">
+            Select a team member to assign this task to
+          </p>
         </div>
 
         <div className="flex space-x-4">

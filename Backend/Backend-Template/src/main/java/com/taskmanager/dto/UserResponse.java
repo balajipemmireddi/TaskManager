@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DashboardResponse {
-
-    private Long totalTasks;
-    private Long completedTasks;
-    private Long pendingTasks;
-    private Long overdueTasks;
+public class UserResponse {
+    private Long id;
+    private String name;
+    private String email;
+    private String role;
 }

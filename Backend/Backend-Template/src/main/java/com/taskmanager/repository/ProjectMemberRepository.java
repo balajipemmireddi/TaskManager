@@ -1,5 +1,6 @@
-package com.taskmanager.project;
+package com.taskmanager.repository;
 
+import com.taskmanager.entity.ProjectMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

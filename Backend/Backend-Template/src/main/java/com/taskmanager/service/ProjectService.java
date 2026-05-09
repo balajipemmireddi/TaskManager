@@ -1,12 +1,16 @@
-package com.taskmanager.project;
+package com.taskmanager.service;
 
 import com.taskmanager.common.Role;
 import com.taskmanager.exception.ResourceNotFoundException;
 import com.taskmanager.exception.UnauthorizedAccessException;
-import com.taskmanager.project.dto.CreateProjectRequest;
-import com.taskmanager.project.dto.ProjectResponse;
-import com.taskmanager.user.User;
-import com.taskmanager.user.UserRepository;
+import com.taskmanager.dto.CreateProjectRequest;
+import com.taskmanager.dto.ProjectResponse;
+import com.taskmanager.entity.User;
+import com.taskmanager.entity.Project;
+import com.taskmanager.entity.ProjectMember;
+import com.taskmanager.repository.UserRepository;
+import com.taskmanager.repository.ProjectRepository;
+import com.taskmanager.repository.ProjectMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

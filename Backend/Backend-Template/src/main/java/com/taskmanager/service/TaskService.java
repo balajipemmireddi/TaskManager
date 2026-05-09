@@ -1,17 +1,19 @@
-package com.taskmanager.task;
+package com.taskmanager.service;
 
 import com.taskmanager.common.Role;
 import com.taskmanager.common.TaskStatus;
 import com.taskmanager.exception.ResourceNotFoundException;
 import com.taskmanager.exception.UnauthorizedAccessException;
-import com.taskmanager.project.Project;
-import com.taskmanager.project.ProjectRepository;
-import com.taskmanager.task.dto.CreateTaskRequest;
-import com.taskmanager.task.dto.TaskResponse;
-import com.taskmanager.task.dto.UpdateTaskRequest;
-import com.taskmanager.task.dto.UpdateTaskStatusRequest;
-import com.taskmanager.user.User;
-import com.taskmanager.user.UserRepository;
+import com.taskmanager.entity.Project;
+import com.taskmanager.entity.Task;
+import com.taskmanager.entity.User;
+import com.taskmanager.repository.ProjectRepository;
+import com.taskmanager.repository.TaskRepository;
+import com.taskmanager.repository.UserRepository;
+import com.taskmanager.dto.CreateTaskRequest;
+import com.taskmanager.dto.TaskResponse;
+import com.taskmanager.dto.UpdateTaskRequest;
+import com.taskmanager.dto.UpdateTaskStatusRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +66,15 @@ public class TaskService {
 
     public List<TaskResponse> getTasksByProject(Long projectId) {
         return taskRepository.findByProjectId(projectId).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<TaskResponse> getTasksByUser(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        
+        return taskRepository.findByAssignedToId(user.getId()).stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }

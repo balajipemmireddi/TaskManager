@@ -1,10 +1,11 @@
-package com.taskmanager.task;
+package com.taskmanager.controller;
 
 import com.taskmanager.common.ApiResponse;
-import com.taskmanager.task.dto.CreateTaskRequest;
-import com.taskmanager.task.dto.TaskResponse;
-import com.taskmanager.task.dto.UpdateTaskRequest;
-import com.taskmanager.task.dto.UpdateTaskStatusRequest;
+import com.taskmanager.dto.CreateTaskRequest;
+import com.taskmanager.dto.TaskResponse;
+import com.taskmanager.dto.UpdateTaskRequest;
+import com.taskmanager.dto.UpdateTaskStatusRequest;
+import com.taskmanager.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,6 +43,13 @@ public class TaskController {
     public ResponseEntity<ApiResponse<List<TaskResponse>>> getTasksByProject(@PathVariable Long projectId) {
         List<TaskResponse> tasks = taskService.getTasksByProject(projectId);
         return ResponseEntity.ok(ApiResponse.success("Tasks retrieved successfully", tasks));
+    }
+
+    @GetMapping("/tasks/my-tasks")
+    @Operation(summary = "Get all tasks assigned to current user")
+    public ResponseEntity<ApiResponse<List<TaskResponse>>> getMyTasks(Authentication authentication) {
+        List<TaskResponse> tasks = taskService.getTasksByUser(authentication.getName());
+        return ResponseEntity.ok(ApiResponse.success("Your tasks retrieved successfully", tasks));
     }
 
     @PutMapping("/tasks/{id}")

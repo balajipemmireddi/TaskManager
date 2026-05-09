@@ -1,13 +1,13 @@
-package com.taskmanager.auth;
+package com.taskmanager.service;
 
-import com.taskmanager.auth.dto.AuthResponse;
-import com.taskmanager.auth.dto.LoginRequest;
-import com.taskmanager.auth.dto.SignupRequest;
+import com.taskmanager.dto.AuthResponse;
+import com.taskmanager.dto.LoginRequest;
+import com.taskmanager.dto.SignupRequest;
 import com.taskmanager.common.Role;
 import com.taskmanager.exception.DuplicateResourceException;
 import com.taskmanager.security.JwtService;
-import com.taskmanager.user.User;
-import com.taskmanager.user.UserRepository;
+import com.taskmanager.entity.User;
+import com.taskmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

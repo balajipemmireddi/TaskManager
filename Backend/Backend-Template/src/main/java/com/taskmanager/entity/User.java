@@ -1,4 +1,4 @@
-package com.taskmanager.user;
+package com.taskmanager.entity;
 
 import com.taskmanager.common.Role;
 import jakarta.persistence.*;

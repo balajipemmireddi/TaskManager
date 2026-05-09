@@ -1,4 +1,4 @@
-package com.taskmanager.project.dto;
+package com.taskmanager.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

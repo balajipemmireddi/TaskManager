@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { taskService } from '../services/taskService';
 import { useAuth } from '../context/authContext';
 import Loader from '../components/Loader';
 
-const TasksPage = () => {
-  const { projectId } = useParams();
+const MyTasksPage = () => {
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,53 +12,48 @@ const TasksPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [priorityFilter, setPriorityFilter] = useState('ALL');
-  const { isAdmin } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (projectId) {
-      fetchTasks();
-    }
-  }, [projectId]);
+    fetchMyTasks();
+  }, []);
 
   useEffect(() => {
     filterTasks();
   }, [tasks, searchTerm, statusFilter, priorityFilter]);
 
+  const fetchMyTasks = async () => {
+    try {
+      const response = await taskService.getMyTasks();
+      if (response.success) {
+        setTasks(response.data);
+        setFilteredTasks(response.data);
+      }
+    } catch (err) {
+      setError('Failed to load your tasks');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const filterTasks = () => {
     let filtered = [...tasks];
 
-    // Search filter
     if (searchTerm) {
       filtered = filtered.filter(task =>
         task.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Status filter
     if (statusFilter !== 'ALL') {
       filtered = filtered.filter(task => task.status === statusFilter);
     }
 
-    // Priority filter
     if (priorityFilter !== 'ALL') {
       filtered = filtered.filter(task => task.priority === priorityFilter);
     }
 
     setFilteredTasks(filtered);
-  };
-
-  const fetchTasks = async () => {
-    try {
-      const response = await taskService.getTasksByProject(projectId);
-      if (response.success) {
-        setTasks(response.data);
-        setFilteredTasks(response.data);
-      }
-    } catch (err) {
-      setError('Failed to load tasks');
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleStatusChange = async (taskId, newStatus) => {
@@ -68,17 +62,6 @@ const TasksPage = () => {
       setTasks(tasks.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t)));
     } catch (err) {
       alert('Failed to update task status');
-    }
-  };
-
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this task?')) return;
-
-    try {
-      await taskService.deleteTask(id);
-      setTasks(tasks.filter((t) => t.id !== id));
-    } catch (err) {
-      alert('Failed to delete task');
     }
   };
 
@@ -112,24 +95,9 @@ const TasksPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Tasks</h1>
-        <div className="flex space-x-4">
-          <Link
-            to="/projects"
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md font-medium"
-          >
-            Back to Projects
-          </Link>
-          {isAdmin() && (
-            <Link
-              to={`/projects/${projectId}/tasks/create`}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium"
-            >
-              Create Task
-            </Link>
-          )}
-        </div>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">My Tasks</h1>
+        <p className="text-gray-600 mt-2">Tasks assigned to you across all projects</p>
       </div>
 
       {/* Search and Filters */}
@@ -182,17 +150,13 @@ const TasksPage = () => {
 
       {filteredTasks.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-lg shadow-md">
+          <span className="text-6xl mb-4 block">📋</span>
           <p className="text-gray-500 text-lg">
-            {tasks.length === 0 ? 'No tasks found' : 'No tasks match your filters'}
+            {tasks.length === 0 ? 'No tasks assigned to you yet' : 'No tasks match your filters'}
           </p>
-          {isAdmin() && tasks.length === 0 && (
-            <Link
-              to={`/projects/${projectId}/tasks/create`}
-              className="text-blue-600 hover:text-blue-700 mt-2 inline-block"
-            >
-              Create your first task
-            </Link>
-          )}
+          <p className="text-gray-400 text-sm mt-2">
+            Tasks will appear here when an admin assigns them to you
+          </p>
         </div>
       ) : (
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
@@ -203,24 +167,30 @@ const TasksPage = () => {
                   Title
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Project
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Priority
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Assigned To
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
+                  Due Date
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredTasks.map((task) => (
-                <tr key={task.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                <tr key={task.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4">
                     <div className="text-sm font-medium text-gray-900">{task.title}</div>
+                    {task.description && (
+                      <div className="text-sm text-gray-500 mt-1">{task.description}</div>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm text-gray-600">{task.projectTitle || 'N/A'}</span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <select
@@ -241,17 +211,7 @@ const TasksPage = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {task.assignedTo || 'Unassigned'}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    {isAdmin() && (
-                      <button
-                        onClick={() => handleDelete(task.id)}
-                        className="text-red-600 hover:text-red-900"
-                      >
-                        Delete
-                      </button>
-                    )}
+                    {task.dueDate || 'No due date'}
                   </td>
                 </tr>
               ))}
@@ -263,4 +223,4 @@ const TasksPage = () => {
   );
 };
 
-export default TasksPage;
+export default MyTasksPage;

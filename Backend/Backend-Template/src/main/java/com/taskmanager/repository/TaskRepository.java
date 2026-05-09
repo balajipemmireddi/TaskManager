@@ -1,5 +1,6 @@
-package com.taskmanager.task;
+package com.taskmanager.repository;
 
+import com.taskmanager.entity.Task;
 import com.taskmanager.common.TaskStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +14,8 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<Task, Long> {
     
     List<Task> findByProjectId(Long projectId);
+    
+    List<Task> findByAssignedToId(Long userId);
     
     long countByAssignedToId(Long userId);
     

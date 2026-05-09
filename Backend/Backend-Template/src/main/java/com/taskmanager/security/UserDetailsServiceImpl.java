@@ -1,7 +1,7 @@
 package com.taskmanager.security;
 
-import com.taskmanager.user.User;
-import com.taskmanager.user.UserRepository;
+import com.taskmanager.entity.User;
+import com.taskmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

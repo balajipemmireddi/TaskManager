@@ -8,6 +8,7 @@ import DashboardPage from './pages/DashboardPage';
 import ProjectsPage from './pages/ProjectsPage';
 import CreateProjectPage from './pages/CreateProjectPage';
 import TasksPage from './pages/TasksPage';
+import MyTasksPage from './pages/MyTasksPage';
 import CreateTaskPage from './pages/CreateTaskPage';
 
 function App() {
@@ -66,7 +67,14 @@ function App() {
               }
             />
             
-            <Route path="/tasks" element={<Navigate to="/projects" replace />} />
+            <Route
+              path="/tasks"
+              element={
+                <ProtectedRoute>
+                  <MyTasksPage />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </div>
       </Router>
