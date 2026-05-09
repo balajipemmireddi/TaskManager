@@ -70,6 +70,15 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    public List<TaskResponse> getTasksByUser(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        
+        return taskRepository.findByAssignedToId(user.getId()).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public TaskResponse updateTask(Long id, UpdateTaskRequest request, String email) {
         User user = userRepository.findByEmail(email)

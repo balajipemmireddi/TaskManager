@@ -11,6 +11,11 @@ export const taskService = {
     return response.data;
   },
 
+  getMyTasks: async () => {
+    const response = await axiosInstance.get('/tasks/my-tasks');
+    return response.data;
+  },
+
   updateTask: async (id, data) => {
     const response = await axiosInstance.put(`/tasks/${id}`, data);
     return response.data;

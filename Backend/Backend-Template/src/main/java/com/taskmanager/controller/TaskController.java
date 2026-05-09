@@ -45,6 +45,13 @@ public class TaskController {
         return ResponseEntity.ok(ApiResponse.success("Tasks retrieved successfully", tasks));
     }
 
+    @GetMapping("/tasks/my-tasks")
+    @Operation(summary = "Get all tasks assigned to current user")
+    public ResponseEntity<ApiResponse<List<TaskResponse>>> getMyTasks(Authentication authentication) {
+        List<TaskResponse> tasks = taskService.getTasksByUser(authentication.getName());
+        return ResponseEntity.ok(ApiResponse.success("Your tasks retrieved successfully", tasks));
+    }
+
     @PutMapping("/tasks/{id}")
     @Operation(summary = "Update task (ADMIN only)")
     public ResponseEntity<ApiResponse<TaskResponse>> updateTask(

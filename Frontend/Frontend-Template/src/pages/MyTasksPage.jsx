@@ -1,0 +1,226 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { taskService } from '../services/taskService';
+import { useAuth } from '../context/authContext';
+import Loader from '../components/Loader';
+
+const MyTasksPage = () => {
+  const [tasks, setTasks] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('ALL');
+  const [priorityFilter, setPriorityFilter] = useState('ALL');
+  const { user } = useAuth();
+
+  useEffect(() => {
+    fetchMyTasks();
+  }, []);
+
+  useEffect(() => {
+    filterTasks();
+  }, [tasks, searchTerm, statusFilter, priorityFilter]);
+
+  const fetchMyTasks = async () => {
+    try {
+      const response = await taskService.getMyTasks();
+      if (response.success) {
+        setTasks(response.data);
+        setFilteredTasks(response.data);
+      }
+    } catch (err) {
+      setError('Failed to load your tasks');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filterTasks = () => {
+    let filtered = [...tasks];
+
+    if (searchTerm) {
+      filtered = filtered.filter(task =>
+        task.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (statusFilter !== 'ALL') {
+      filtered = filtered.filter(task => task.status === statusFilter);
+    }
+
+    if (priorityFilter !== 'ALL') {
+      filtered = filtered.filter(task => task.priority === priorityFilter);
+    }
+
+    setFilteredTasks(filtered);
+  };
+
+  const handleStatusChange = async (taskId, newStatus) => {
+    try {
+      await taskService.updateTaskStatus(taskId, newStatus);
+      setTasks(tasks.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t)));
+    } catch (err) {
+      alert('Failed to update task status');
+    }
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'TODO':
+        return 'bg-gray-200 text-gray-800';
+      case 'IN_PROGRESS':
+        return 'bg-blue-200 text-blue-800';
+      case 'DONE':
+        return 'bg-green-200 text-green-800';
+      default:
+        return 'bg-gray-200 text-gray-800';
+    }
+  };
+
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case 'HIGH':
+        return 'text-red-600';
+      case 'MEDIUM':
+        return 'text-yellow-600';
+      case 'LOW':
+        return 'text-green-600';
+      default:
+        return 'text-gray-600';
+    }
+  };
+
+  if (loading) return <Loader />;
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">My Tasks</h1>
+        <p className="text-gray-600 mt-2">Tasks assigned to you across all projects</p>
+      </div>
+
+      {/* Search and Filters */}
+      <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="md:col-span-2">
+            <input
+              type="text"
+              placeholder="🔍 Search tasks..."
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div>
+            <select
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="ALL">All Status</option>
+              <option value="TODO">To Do</option>
+              <option value="IN_PROGRESS">In Progress</option>
+              <option value="DONE">Done</option>
+            </select>
+          </div>
+          <div>
+            <select
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={priorityFilter}
+              onChange={(e) => setPriorityFilter(e.target.value)}
+            >
+              <option value="ALL">All Priority</option>
+              <option value="HIGH">High</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="LOW">Low</option>
+            </select>
+          </div>
+        </div>
+        <div className="mt-3 text-sm text-gray-600">
+          Showing {filteredTasks.length} of {tasks.length} tasks
+        </div>
+      </div>
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {error}
+        </div>
+      )}
+
+      {filteredTasks.length === 0 ? (
+        <div className="text-center py-12 bg-white rounded-lg shadow-md">
+          <span className="text-6xl mb-4 block">📋</span>
+          <p className="text-gray-500 text-lg">
+            {tasks.length === 0 ? 'No tasks assigned to you yet' : 'No tasks match your filters'}
+          </p>
+          <p className="text-gray-400 text-sm mt-2">
+            Tasks will appear here when an admin assigns them to you
+          </p>
+        </div>
+      ) : (
+        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Title
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Project
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Priority
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Due Date
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredTasks.map((task) => (
+                <tr key={task.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4">
+                    <div className="text-sm font-medium text-gray-900">{task.title}</div>
+                    {task.description && (
+                      <div className="text-sm text-gray-500 mt-1">{task.description}</div>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm text-gray-600">{task.projectTitle || 'N/A'}</span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <select
+                      value={task.status}
+                      onChange={(e) => handleStatusChange(task.id, e.target.value)}
+                      className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                        task.status
+                      )}`}
+                    >
+                      <option value="TODO">TODO</option>
+                      <option value="IN_PROGRESS">IN PROGRESS</option>
+                      <option value="DONE">DONE</option>
+                    </select>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`text-sm font-semibold ${getPriorityColor(task.priority)}`}>
+                      {task.priority}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {task.dueDate || 'No due date'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default MyTasksPage;
