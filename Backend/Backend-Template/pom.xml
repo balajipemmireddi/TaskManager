@@ -16,6 +16,7 @@
 	
 	<properties>
 		<java.version>17</java.version>
+		<start-class>com.taskmanager.TeamTaskManagerApplication</start-class>
 	</properties>
 	
 	<dependencies>
@@ -107,6 +108,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<mainClass>com.taskmanager.TeamTaskManagerApplication</mainClass>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
