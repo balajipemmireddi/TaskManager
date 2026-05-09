@@ -1,15 +1,15 @@
 -- Fix passwords for all users
 -- This BCrypt hash is for password: password123
--- Generated with BCryptPasswordEncoder strength 10
+-- Hash: $2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46
 
 UPDATE users 
-SET password = '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG'
+SET password = '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46'
 WHERE email LIKE '%@company.com';
 
 -- Verify the update
 SELECT id, name, email, role, 
        CASE 
-         WHEN password = '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG' 
+         WHEN password = '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46' 
          THEN 'Password Updated ✓' 
          ELSE 'Old Password' 
        END as status

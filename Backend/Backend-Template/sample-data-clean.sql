@@ -1,7 +1,7 @@
 -- Sample Data for Team Task Manager
 -- This script CLEARS all existing data and inserts fresh sample data
 -- Password for all users: password123
--- BCrypt hash: $2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG
+-- BCrypt hash: $2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46
 
 -- ============================================
 -- CLEAR ALL EXISTING DATA
@@ -21,26 +21,26 @@ ALTER SEQUENCE project_members_id_seq RESTART WITH 1;
 -- INSERT USERS (20 users: 5 admins, 15 members)
 -- ============================================
 INSERT INTO users (name, email, password, role, created_at) VALUES
-('John Admin', 'john.admin@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'ADMIN', NOW()),
-('Sarah Manager', 'sarah.manager@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'ADMIN', NOW()),
-('Mike Director', 'mike.director@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'ADMIN', NOW()),
-('Lisa Lead', 'lisa.lead@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'ADMIN', NOW()),
-('Tom Supervisor', 'tom.supervisor@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'ADMIN', NOW()),
-('Alice Developer', 'alice.dev@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('Bob Designer', 'bob.design@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('Carol Tester', 'carol.test@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('David Engineer', 'david.eng@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('Emma Analyst', 'emma.analyst@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('Frank Developer', 'frank.dev@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('Grace Designer', 'grace.design@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('Henry Tester', 'henry.test@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('Iris Developer', 'iris.dev@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('Jack Engineer', 'jack.eng@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('Kate Analyst', 'kate.analyst@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('Leo Developer', 'leo.dev@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('Mia Designer', 'mia.design@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('Noah Tester', 'noah.test@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW()),
-('Olivia Developer', 'olivia.dev@company.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'MEMBER', NOW());
+('John Admin', 'john.admin@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'ADMIN', NOW()),
+('Sarah Manager', 'sarah.manager@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'ADMIN', NOW()),
+('Mike Director', 'mike.director@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'ADMIN', NOW()),
+('Lisa Lead', 'lisa.lead@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'ADMIN', NOW()),
+('Tom Supervisor', 'tom.supervisor@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'ADMIN', NOW()),
+('Alice Developer', 'alice.dev@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('Bob Designer', 'bob.design@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('Carol Tester', 'carol.test@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('David Engineer', 'david.eng@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('Emma Analyst', 'emma.analyst@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('Frank Developer', 'frank.dev@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('Grace Designer', 'grace.design@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('Henry Tester', 'henry.test@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('Iris Developer', 'iris.dev@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('Jack Engineer', 'jack.eng@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('Kate Analyst', 'kate.analyst@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('Leo Developer', 'leo.dev@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('Mia Designer', 'mia.design@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('Noah Tester', 'noah.test@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW()),
+('Olivia Developer', 'olivia.dev@company.com', '$2a$10$Bpi1b6h0h3uLfPM7YrDObeUUFY2whF598TWaUrFUY0VH06m9eXr46', 'MEMBER', NOW());
 
 -- ============================================
 -- INSERT PROJECTS (50 projects)
